@@ -1,0 +1,5 @@
+local Themes = {
+  Dark = {Background="#1e1e24", Accent="#00ff9f", Text="#ffffff"},
+  NeonGreen = {Background="#0d1117", Accent="#00ff00", Text="#e0e0e0"},
+  CyberBlue = {Background="#0b0c10", Accent="#00bfff", Text="#cfd8dc"},
+}
