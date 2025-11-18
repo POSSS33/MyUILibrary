@@ -1,92 +1,78 @@
---// BoxyHackerUI - Neo Hacker UI Library (by soooooo G)
+--// MiniMobileUI - Simple Small Mobile UI (by soooooo G)
 
-local BoxyHackerUI = {}
+local MiniUI = {}
 
-local HackerTheme = {
-    Background = Color3.fromRGB(10, 10, 10),
-    Topbar = Color3.fromRGB(15, 15, 15),
-    Accent = Color3.fromRGB(0, 255, 130),
-    Button = Color3.fromRGB(20, 20, 20),
-    ButtonText = Color3.fromRGB(0, 255, 130),
-}
+function MiniUI:CreateWindow(config)
+    local TitleText = config.Title or "Mini UI"
+    local ThemeColor = config.Color or Color3.fromRGB(0, 255, 130)
 
-function BoxyHackerUI:CreateWindow(config)
-    local TitleText = config.Title or "H4CK MENU"
+    local gui = Instance.new("ScreenGui", game.CoreGui)
+    gui.ResetOnSpawn = false
+    gui.Name = "MiniMobileUI"
 
-    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-    ScreenGui.ResetOnSpawn = false
-    ScreenGui.Name = "BoxyHackerUI"
-
-    --// MAIN WINDOW
-    local Main = Instance.new("Frame", ScreenGui)
-    Main.Size = UDim2.new(0, 380, 0, 450)
-    Main.Position = UDim2.new(0.5, -190, 0.5, -225)
-    Main.BackgroundColor3 = HackerTheme.Background
+    --// MAIN WINDOW (เล็กมาก)
+    local Main = Instance.new("Frame", gui)
+    Main.Size = UDim2.new(0, 230, 0, 300)
+    Main.Position = UDim2.new(0.5, -115, 0.5, -150)
+    Main.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
     Main.BorderSizePixel = 0
     Main.Active = true
     Main.Draggable = true
 
-    --// OUTLINE (Green Hacker Edge)
-    local Outline = Instance.new("UIStroke", Main)
-    Outline.Color = HackerTheme.Accent
-    Outline.Thickness = 2
+    local Stroke = Instance.new("UIStroke", Main)
+    Stroke.Color = ThemeColor
+    Stroke.Thickness = 1
 
     --// TOPBAR
-    local Topbar = Instance.new("Frame", Main)
-    Topbar.Size = UDim2.new(1, 0, 0, 40)
-    Topbar.BackgroundColor3 = HackerTheme.Topbar
-    Topbar.BorderSizePixel = 0
+    local Top = Instance.new("Frame", Main)
+    Top.Size = UDim2.new(1, 0, 0, 32)
+    Top.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+    Top.BorderSizePixel = 0
 
-    local TopStroke = Instance.new("UIStroke", Topbar)
-    TopStroke.Color = HackerTheme.Accent
-    TopStroke.Thickness = 1
-
-    --// TITLE
-    local Title = Instance.new("TextLabel", Topbar)
+    local Title = Instance.new("TextLabel", Top)
     Title.Size = UDim2.new(1, -10, 1, 0)
     Title.Position = UDim2.new(0, 10, 0, 0)
-    Title.Text = "[ " .. TitleText .. " ]"
+    Title.Text = TitleText
     Title.BackgroundTransparency = 1
-    Title.TextColor3 = HackerTheme.Accent
-    Title.Font = Enum.Font.Code
-    Title.TextSize = 20
+    Title.Font = Enum.Font.GothamBold
+    Title.TextColor3 = ThemeColor
+    Title.TextSize = 15
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    --// BUTTON CONTAINER
+    --// CONTAINER
     local Container = Instance.new("Frame", Main)
-    Container.Size = UDim2.new(1, 0, 1, -40)
-    Container.Position = UDim2.new(0, 0, 0, 40)
+    Container.Size = UDim2.new(1, 0, 1, -32)
+    Container.Position = UDim2.new(0, 0, 0, 32)
     Container.BackgroundTransparency = 1
 
-    local UIList = Instance.new("UIListLayout", Container)
-    UIList.Padding = UDim.new(0, 8)
-    UIList.SortOrder = Enum.SortOrder.LayoutOrder
+    local List = Instance.new("UIListLayout", Container)
+    List.Padding = UDim.new(0, 6)
+    List.SortOrder = Enum.SortOrder.LayoutOrder
 
     --// BUTTON FUNCTION
-    function BoxyHackerUI:Button(text, callback)
-        callback = callback or function() end
+    function MiniUI:Button(Text, Callback)
+        Callback = Callback or function() end
 
         local Btn = Instance.new("TextButton", Container)
-        Btn.Size = UDim2.new(1, -20, 0, 42)
-        Btn.Position = UDim2.new(0, 10, 0, 0)
-        Btn.BackgroundColor3 = HackerTheme.Button
-        Btn.Text = "> " .. text
-        Btn.TextColor3 = HackerTheme.ButtonText
-        Btn.Font = Enum.Font.Code
-        Btn.TextSize = 18
+        Btn.Size = UDim2.new(1, -16, 0, 32)
+        Btn.Position = UDim2.new(0, 8, 0, 0)
+        Btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
         Btn.BorderSizePixel = 0
+        Btn.Text = Text
+        Btn.TextColor3 = ThemeColor
+        Btn.Font = Enum.Font.Gotham
+        Btn.TextSize = 14
 
-        -- Outline
-        local Stroke = Instance.new("UIStroke", Btn)
-        Stroke.Color = HackerTheme.Accent
-        Stroke.Thickness = 1
+        local S = Instance.new("UIStroke", Btn)
+        S.Color = ThemeColor
+        S.Thickness = 1
 
         Btn.MouseButton1Click:Connect(function()
-            pcall(callback)
+            pcall(Callback)
         end)
     end
 
-    return BoxyHackerUI
+    return MiniUI
 end
 
-return BoxyHackerUI
+return MiniUI
