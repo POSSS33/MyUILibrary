@@ -1,0 +1,97 @@
+--// MobileBoxyUI (Boxy UI Library by soooooo G)
+
+local MobileBoxyUI = {}
+
+local Themes = {
+    Dark = {
+        Background = Color3.fromRGB(25, 25, 25),
+        Topbar = Color3.fromRGB(40, 40, 40),
+        Button = Color3.fromRGB(60, 60, 60),
+        ButtonText = Color3.fromRGB(255, 255, 255),
+    },
+    Light = {
+        Background = Color3.fromRGB(235, 235, 235),
+        Topbar = Color3.fromRGB(200, 200, 200),
+        Button = Color3.fromRGB(180, 180, 180),
+        ButtonText = Color3.fromRGB(40, 40, 40),
+    },
+    Blue = {
+        Background = Color3.fromRGB(20, 25, 60),
+        Topbar = Color3.fromRGB(40, 50, 90),
+        Button = Color3.fromRGB(50, 70, 140),
+        ButtonText = Color3.fromRGB(255, 255, 255),
+    },
+    Red = {
+        Background = Color3.fromRGB(60, 20, 20),
+        Topbar = Color3.fromRGB(90, 40, 40),
+        Button = Color3.fromRGB(140, 50, 50),
+        ButtonText = Color3.fromRGB(255, 255, 255),
+    }
+}
+
+function MobileBoxyUI:CreateWindow(config)
+    local theme = Themes[config.Theme] or Themes.Dark
+
+    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.Name = "MobileBoxyUI"
+
+    --// Main Box
+    local Main = Instance.new("Frame", ScreenGui)
+    Main.Size = UDim2.new(0, 350, 0, 420)
+    Main.Position = UDim2.new(0.5, -175, 0.5, -210)
+    Main.BackgroundColor3 = theme.Background
+    Main.BorderSizePixel = 0
+    Main.Active = true
+    Main.Draggable = true
+
+    --// Topbar
+    local Topbar = Instance.new("Frame", Main)
+    Topbar.Size = UDim2.new(1, 0, 0, 40)
+    Topbar.BackgroundColor3 = theme.Topbar
+    Topbar.BorderSizePixel = 0
+
+    local Title = Instance.new("TextLabel", Topbar)
+    Title.Size = UDim2.new(1, -10, 1, 0)
+    Title.Position = UDim2.new(0, 10, 0, 0)
+    Title.Text = config.Title or "Boxy UI"
+    Title.BackgroundTransparency = 1
+    Title.TextColor3 = Color3.fromRGB(255,255,255)
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 18
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+
+    --// Container (สำหรับปุ่มทั้งหมด)
+    local Container = Instance.new("Frame", Main)
+    Container.Size = UDim2.new(1, 0, 1, -40)
+    Container.Position = UDim2.new(0, 0, 0, 40)
+    Container.BackgroundTransparency = 1
+
+    local UIList = Instance.new("UIListLayout", Container)
+    UIList.Padding = UDim.new(0, 6)
+    UIList.SortOrder = Enum.SortOrder.LayoutOrder
+
+    --// ฟังก์ชันสร้างปุ่ม
+    function MobileBoxyUI:Button(text, callback)
+        callback = callback or function() end
+
+        local Btn = Instance.new("TextButton", Container)
+        Btn.Size = UDim2.new(1, -20, 0, 40)
+        Btn.Position = UDim2.new(0, 10, 0, 0)
+        Btn.BackgroundColor3 = theme.Button
+        Btn.Text = text
+        Btn.TextColor3 = theme.ButtonText
+        Btn.Font = Enum.Font.Gotham
+        Btn.TextSize = 16
+        Btn.BorderSizePixel = 0
+
+        Btn.MouseButton1Click:Connect(function()
+            pcall(callback)
+        end)
+    end
+
+    -- ส่ง object กลับเพื่อให้เรียก Button ได้
+    return MobileBoxyUI
+end
+
+return MobileBoxyUI
