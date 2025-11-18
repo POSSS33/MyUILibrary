@@ -1,78 +1,107 @@
---// MiniMobileUI - Simple Small Mobile UI (by soooooo G)
+--// MiniBox UI Library (Simple Mobile UI)
+local MiniBox = {}
 
-local MiniUI = {}
+function MiniBox:CreateWindow(title)
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "MiniBoxUI"
+    ScreenGui.Parent = game.CoreGui
 
-function MiniUI:CreateWindow(config)
-    local TitleText = config.Title or "Mini UI"
-    local ThemeColor = config.Color or Color3.fromRGB(0, 255, 130)
-
-    local gui = Instance.new("ScreenGui", game.CoreGui)
-    gui.ResetOnSpawn = false
-    gui.Name = "MiniMobileUI"
-
-    --// MAIN WINDOW (เล็กมาก)
-    local Main = Instance.new("Frame", gui)
-    Main.Size = UDim2.new(0, 230, 0, 300)
-    Main.Position = UDim2.new(0.5, -115, 0.5, -150)
-    Main.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+    local Main = Instance.new("Frame")
+    Main.Size = UDim2.new(0, 260, 0, 180)
+    Main.Position = UDim2.new(0.5, -130, 0.4, 0)
+    Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
     Main.BorderSizePixel = 0
     Main.Active = true
     Main.Draggable = true
+    Main.Parent = ScreenGui
 
-    local Stroke = Instance.new("UIStroke", Main)
-    Stroke.Color = ThemeColor
-    Stroke.Thickness = 1
+    local UIAspect = Instance.new("UIScale")
+    UIAspect.Scale = 1
+    UIAspect.Parent = Main
 
-    --// TOPBAR
-    local Top = Instance.new("Frame", Main)
-    Top.Size = UDim2.new(1, 0, 0, 32)
-    Top.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+    local Top = Instance.new("Frame")
+    Top.Size = UDim2.new(1, 0, 0, 30)
+    Top.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Top.BorderSizePixel = 0
+    Top.Parent = Main
 
-    local Title = Instance.new("TextLabel", Top)
-    Title.Size = UDim2.new(1, -10, 1, 0)
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, -60, 1, 0)
     Title.Position = UDim2.new(0, 10, 0, 0)
-    Title.Text = TitleText
     Title.BackgroundTransparency = 1
+    Title.Text = title
     Title.Font = Enum.Font.GothamBold
-    Title.TextColor3 = ThemeColor
-    Title.TextSize = 15
+    Title.TextSize = 16
+    Title.TextColor3 = Color3.fromRGB(255,255,255)
     Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Parent = Top
 
-    --// CONTAINER
-    local Container = Instance.new("Frame", Main)
-    Container.Size = UDim2.new(1, 0, 1, -32)
-    Container.Position = UDim2.new(0, 0, 0, 32)
-    Container.BackgroundTransparency = 1
+    --// ปุ่มย่อ
+    local MinBtn = Instance.new("TextButton")
+    MinBtn.Size = UDim2.new(0, 25, 0, 25)
+    MinBtn.Position = UDim2.new(1, -55, 0.1, 0)
+    MinBtn.Text = "🔽"
+    MinBtn.Font = Enum.Font.GothamSemibold
+    MinBtn.TextSize = 14
+    MinBtn.BackgroundTransparency = 1
+    MinBtn.TextColor3 = Color3.fromRGB(255,255,255)
+    MinBtn.Parent = Top
 
-    local List = Instance.new("UIListLayout", Container)
-    List.Padding = UDim.new(0, 6)
-    List.SortOrder = Enum.SortOrder.LayoutOrder
+    --// ปุ่มปิด
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+    CloseBtn.Position = UDim2.new(1, -30, 0.1, 0)
+    CloseBtn.Text = "❌"
+    CloseBtn.Font = Enum.Font.GothamSemibold
+    CloseBtn.TextSize = 14
+    CloseBtn.BackgroundTransparency = 1
+    CloseBtn.TextColor3 = Color3.fromRGB(255,70,70)
+    CloseBtn.Parent = Top
 
-    --// BUTTON FUNCTION
-    function MiniUI:Button(Text, Callback)
-        Callback = Callback or function() end
+    local Content = Instance.new("Frame")
+    Content.Size = UDim2.new(1, 0, 1, -30)
+    Content.Position = UDim2.new(0,0,0,30)
+    Content.BackgroundTransparency = 1
+    Content.Parent = Main
 
-        local Btn = Instance.new("TextButton", Container)
-        Btn.Size = UDim2.new(1, -16, 0, 32)
-        Btn.Position = UDim2.new(0, 8, 0, 0)
-        Btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-        Btn.BorderSizePixel = 0
-        Btn.Text = Text
-        Btn.TextColor3 = ThemeColor
-        Btn.Font = Enum.Font.Gotham
+    CloseBtn.MouseButton1Click:Connect(function()
+        ScreenGui:Destroy()
+    end)
+
+    local minimized = false
+    MinBtn.MouseButton1Click:Connect(function()
+        minimized = not minimized
+        if minimized then
+            Content.Visible = false
+            Main.Size = UDim2.new(0,260,0,30)
+            MinBtn.Text = "🔼"
+        else
+            Content.Visible = true
+            Main.Size = UDim2.new(0,260,0,180)
+            MinBtn.Text = "🔽"
+        end
+    end)
+
+    local function AddButton(text, callback)
+        local Btn = Instance.new("TextButton")
+        Btn.Size = UDim2.new(1, -20, 0, 35)
+        Btn.Position = UDim2.new(0, 10, 0, 40 * (#Content:GetChildren()))
+        Btn.Text = text
+        Btn.Font = Enum.Font.GothamSemibold
         Btn.TextSize = 14
-
-        local S = Instance.new("UIStroke", Btn)
-        S.Color = ThemeColor
-        S.Thickness = 1
+        Btn.TextColor3 = Color3.fromRGB(255,255,255)
+        Btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+        Btn.BorderSizePixel = 0
+        Btn.Parent = Content
 
         Btn.MouseButton1Click:Connect(function()
-            pcall(Callback)
+            callback()
         end)
     end
 
-    return MiniUI
+    return {
+        Button = AddButton
+    }
 end
 
-return MiniUI
+return MiniBox
