@@ -1,97 +1,92 @@
---// MobileBoxyUI (Boxy UI Library by soooooo G)
+--// BoxyHackerUI - Neo Hacker UI Library (by soooooo G)
 
-local MobileBoxyUI = {}
+local BoxyHackerUI = {}
 
-local Themes = {
-    Dark = {
-        Background = Color3.fromRGB(25, 25, 25),
-        Topbar = Color3.fromRGB(40, 40, 40),
-        Button = Color3.fromRGB(60, 60, 60),
-        ButtonText = Color3.fromRGB(255, 255, 255),
-    },
-    Light = {
-        Background = Color3.fromRGB(235, 235, 235),
-        Topbar = Color3.fromRGB(200, 200, 200),
-        Button = Color3.fromRGB(180, 180, 180),
-        ButtonText = Color3.fromRGB(40, 40, 40),
-    },
-    Blue = {
-        Background = Color3.fromRGB(20, 25, 60),
-        Topbar = Color3.fromRGB(40, 50, 90),
-        Button = Color3.fromRGB(50, 70, 140),
-        ButtonText = Color3.fromRGB(255, 255, 255),
-    },
-    Red = {
-        Background = Color3.fromRGB(60, 20, 20),
-        Topbar = Color3.fromRGB(90, 40, 40),
-        Button = Color3.fromRGB(140, 50, 50),
-        ButtonText = Color3.fromRGB(255, 255, 255),
-    }
+local HackerTheme = {
+    Background = Color3.fromRGB(10, 10, 10),
+    Topbar = Color3.fromRGB(15, 15, 15),
+    Accent = Color3.fromRGB(0, 255, 130),
+    Button = Color3.fromRGB(20, 20, 20),
+    ButtonText = Color3.fromRGB(0, 255, 130),
 }
 
-function MobileBoxyUI:CreateWindow(config)
-    local theme = Themes[config.Theme] or Themes.Dark
+function BoxyHackerUI:CreateWindow(config)
+    local TitleText = config.Title or "H4CK MENU"
 
     local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
     ScreenGui.ResetOnSpawn = false
-    ScreenGui.Name = "MobileBoxyUI"
+    ScreenGui.Name = "BoxyHackerUI"
 
-    --// Main Box
+    --// MAIN WINDOW
     local Main = Instance.new("Frame", ScreenGui)
-    Main.Size = UDim2.new(0, 350, 0, 420)
-    Main.Position = UDim2.new(0.5, -175, 0.5, -210)
-    Main.BackgroundColor3 = theme.Background
+    Main.Size = UDim2.new(0, 380, 0, 450)
+    Main.Position = UDim2.new(0.5, -190, 0.5, -225)
+    Main.BackgroundColor3 = HackerTheme.Background
     Main.BorderSizePixel = 0
     Main.Active = true
     Main.Draggable = true
 
-    --// Topbar
+    --// OUTLINE (Green Hacker Edge)
+    local Outline = Instance.new("UIStroke", Main)
+    Outline.Color = HackerTheme.Accent
+    Outline.Thickness = 2
+
+    --// TOPBAR
     local Topbar = Instance.new("Frame", Main)
     Topbar.Size = UDim2.new(1, 0, 0, 40)
-    Topbar.BackgroundColor3 = theme.Topbar
+    Topbar.BackgroundColor3 = HackerTheme.Topbar
     Topbar.BorderSizePixel = 0
 
+    local TopStroke = Instance.new("UIStroke", Topbar)
+    TopStroke.Color = HackerTheme.Accent
+    TopStroke.Thickness = 1
+
+    --// TITLE
     local Title = Instance.new("TextLabel", Topbar)
     Title.Size = UDim2.new(1, -10, 1, 0)
     Title.Position = UDim2.new(0, 10, 0, 0)
-    Title.Text = config.Title or "Boxy UI"
+    Title.Text = "[ " .. TitleText .. " ]"
     Title.BackgroundTransparency = 1
-    Title.TextColor3 = Color3.fromRGB(255,255,255)
-    Title.Font = Enum.Font.GothamBold
-    Title.TextSize = 18
+    Title.TextColor3 = HackerTheme.Accent
+    Title.Font = Enum.Font.Code
+    Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Left
 
-    --// Container (สำหรับปุ่มทั้งหมด)
+    --// BUTTON CONTAINER
     local Container = Instance.new("Frame", Main)
     Container.Size = UDim2.new(1, 0, 1, -40)
     Container.Position = UDim2.new(0, 0, 0, 40)
     Container.BackgroundTransparency = 1
 
     local UIList = Instance.new("UIListLayout", Container)
-    UIList.Padding = UDim.new(0, 6)
+    UIList.Padding = UDim.new(0, 8)
     UIList.SortOrder = Enum.SortOrder.LayoutOrder
 
-    --// ฟังก์ชันสร้างปุ่ม
-    function MobileBoxyUI:Button(text, callback)
+    --// BUTTON FUNCTION
+    function BoxyHackerUI:Button(text, callback)
         callback = callback or function() end
 
         local Btn = Instance.new("TextButton", Container)
-        Btn.Size = UDim2.new(1, -20, 0, 40)
+        Btn.Size = UDim2.new(1, -20, 0, 42)
         Btn.Position = UDim2.new(0, 10, 0, 0)
-        Btn.BackgroundColor3 = theme.Button
-        Btn.Text = text
-        Btn.TextColor3 = theme.ButtonText
-        Btn.Font = Enum.Font.Gotham
-        Btn.TextSize = 16
+        Btn.BackgroundColor3 = HackerTheme.Button
+        Btn.Text = "> " .. text
+        Btn.TextColor3 = HackerTheme.ButtonText
+        Btn.Font = Enum.Font.Code
+        Btn.TextSize = 18
         Btn.BorderSizePixel = 0
+
+        -- Outline
+        local Stroke = Instance.new("UIStroke", Btn)
+        Stroke.Color = HackerTheme.Accent
+        Stroke.Thickness = 1
 
         Btn.MouseButton1Click:Connect(function()
             pcall(callback)
         end)
     end
 
-    -- ส่ง object กลับเพื่อให้เรียก Button ได้
-    return MobileBoxyUI
+    return BoxyHackerUI
 end
 
-return MobileBoxyUI
+return BoxyHackerUI
